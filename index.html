@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>K&amp;A · Nossa História</title>
+  <meta name="description" content="A história de K e A, contada como um catálogo de filmes.">
+  <meta name="theme-color" content="#0f0b09">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f0b09'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='30' font-weight='700' text-anchor='middle' fill='%23ff7a1a'%3EK%26A%3C/text%3E%3C/svg%3E">
+ 
+  <!-- marca a página como "com JavaScript" e pula a abertura nas próximas visitas da mesma sessão -->
+  <script>
+    document.documentElement.classList.add('js');
+    try { if (sessionStorage.getItem('ka-intro')) document.documentElement.classList.add('sem-intro'); } catch (e) {}
+  </script>
+ 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+ 
+  <!-- ABERTURA -->
+  <div class="intro" id="intro" aria-hidden="true">
+    <div class="intro-conteudo">
+      <div class="intro-logo">K<span>&amp;</span>A</div>
+      <div class="intro-linha"></div>
+      <div class="intro-marca">NOSSA<span>FLIX</span></div>
+    </div>
+  </div>
+ 
+  <div class="progresso" id="progresso" aria-hidden="true"></div>
+  <canvas class="confete" id="confete" aria-hidden="true"></canvas>
+ 
+  <a class="pular" href="#catalogo">Ir para o catálogo</a>
+ 
+  <!-- CABEÇALHO -->
+  <header class="topo" id="topo">
+    <div class="wrap topo-in">
+      <a href="#inicio" class="logo" id="logo" aria-label="K e A, início">K<span>&amp;</span>A</a>
+      <button type="button" class="menu-toggle" id="menu-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="menu" id="menu" aria-label="Principal">
+        <a href="#inicio">Início</a>
+        <a href="#catalogo">Filmes</a>
+        <a href="#linha-tempo">Linha do tempo</a>
+        <a href="#carta">Carta</a>
+        <button type="button" class="menu-botao" id="btn-sorteio-nav">Surpreenda-me</button>
+      </nav>
+    </div>
+  </header>
+ 
+  <main>
+    <!-- DESTAQUE -->
+    <section class="hero" id="inicio">
+      <canvas class="brasas" id="brasas" aria-hidden="true"></canvas>
+      <div class="holofote" aria-hidden="true"></div>
+      <div class="grao" aria-hidden="true"></div>
+ 
+      <div class="wrap hero-in">
+        <div class="hero-texto">
+          <p class="marca">NOSSA<span>FLIX</span><em>Original</em></p>
+          <p class="selo"><span class="ponto" aria-hidden="true"></span>Em cartaz desde <strong id="data-inicio">16/08/2025</strong></p>
+          <h1 id="hero-titulo">Nossa História</h1>
+          <ul class="meta" id="hero-meta"></ul>
+          <p class="hero-sinopse" id="hero-sinopse"></p>
+          <div class="hero-botoes">
+            <button type="button" class="btn btn-primario" id="btn-assistir">
+              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M7 4.5v15l13-7.5z" fill="currentColor"/></svg>
+              Assistir
+            </button>
+            <button type="button" class="btn btn-contorno" id="btn-sorteio">Sortear um momento</button>
+          </div>
+          <p class="aviso" id="mesversario" hidden></p>
+        </div>
+ 
+        <div class="hero-poster-wrap">
+          <button type="button" class="hero-poster" id="hero-poster" aria-label="Abrir o filme em destaque"></button>
+        </div>
+      </div>
+ 
+      <!-- CONTADOR -->
+      <div class="faixa">
+        <div class="wrap faixa-in">
+          <p class="faixa-label">Tempo de exibição</p>
+          <div class="unidade"><span id="c-anos">0</span><small>anos</small></div>
+          <div class="unidade"><span id="c-meses">0</span><small>meses</small></div>
+          <div class="unidade"><span id="c-dias">0</span><small>dias</small></div>
+          <div class="unidade"><span id="c-horas">00</span><small>horas</small></div>
+          <div class="unidade"><span id="c-minutos">00</span><small>min</small></div>
+          <div class="unidade"><span id="c-segundos">00</span><small>seg</small></div>
+        </div>
+      </div>
+    </section>
+ 
+    <!-- FAIXA ROLANDO -->
+    <div class="marquee" aria-hidden="true"><div class="marquee-trilho" id="marquee"></div></div>
+ 
+    <!-- CATÁLOGO -->
+    <section class="catalogo" id="catalogo">
+      <div class="wrap">
+        <header class="secao-topo rev">
+          <div>
+            <p class="eyebrow">Catálogo</p>
+            <h2>Todos os momentos</h2>
+          </div>
+          <div class="filtros" id="filtros" role="group" aria-label="Filtrar por gênero"></div>
+        </header>
+        <div id="linhas"></div>
+      </div>
+    </section>
+ 
+    <!-- LINHA DO TEMPO -->
+    <section class="secao-tl" id="linha-tempo">
+      <div class="wrap">
+        <header class="secao-topo secao-centro rev">
+          <div>
+            <p class="eyebrow">Linha do tempo</p>
+            <h2>Do começo até aqui</h2>
+          </div>
+        </header>
+        <ol class="tl" id="tl"></ol>
+      </div>
+    </section>
+ 
+    <!-- NÚMEROS -->
+    <section class="numeros" id="numeros">
+      <div class="wrap">
+        <header class="secao-topo secao-centro rev">
+          <div>
+            <p class="eyebrow">Bastidores</p>
+            <h2>Nossa história em números</h2>
+          </div>
+        </header>
+        <div class="num-grade">
+          <div class="num rev"><span class="num-v" id="n-dias">0</span><small>dias de namoro</small></div>
+          <div class="num rev" style="--d:80ms"><span class="num-v" id="n-meses">0</span><small>mesversários completos</small></div>
+          <div class="num rev" style="--d:160ms"><span class="num-v" id="n-primeira">0</span><small>dias desde a nossa primeira vez</small></div>
+          <div class="num rev" style="--d:240ms"><span class="num-v" id="n-caps">0</span><small>capítulos já vividos</small></div>
+        </div>
+      </div>
+    </section>
+ 
+    <!-- CARTA -->
+    <section class="carta" id="carta">
+      <div class="wrap carta-in">
+        <header class="secao-topo secao-centro rev">
+          <div>
+            <p class="eyebrow">Uma coisa pra você</p>
+            <h2>Chegou uma carta</h2>
+          </div>
+        </header>
+ 
+        <button type="button" class="envelope rev" id="envelope" aria-expanded="false" aria-controls="papel">
+          <span class="env-aba" aria-hidden="true"></span>
+          <span class="env-selo" aria-hidden="true">♥</span>
+          <span class="env-dica">Toque para abrir</span>
+        </button>
+ 
+        <div class="papel" id="papel" aria-hidden="true">
+          <div class="papel-in">
+            <div class="papel-folha">
+              <p class="carta-texto" id="carta-texto"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+ 
+  <!-- RODAPÉ -->
+  <footer class="rodape">
+    <div class="wrap rodape-in">
+      <div>
+        <a href="#inicio" class="logo logo-rodape" aria-label="K e A, início">K<span>&amp;</span>A</a>
+        <p class="rodape-texto">Todos os momentos são baseados em fatos reais.</p>
+      </div>
+      <p class="rodape-copy">NOSSA<span>FLIX</span> · <span id="ano-atual"></span></p>
+    </div>
+  </footer>
+ 
+  <!-- BOTÕES FLUTUANTES -->
+  <button type="button" class="flutuante flut-musica" id="musica-btn" aria-label="Tocar música" aria-pressed="false" hidden>
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 18V6l10-2v12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="18" r="2.5" fill="currentColor"/><circle cx="17" cy="16" r="2.5" fill="currentColor"/></svg>
+  </button>
+  <button type="button" class="flutuante flut-topo" id="voltar-topo" aria-label="Voltar ao topo">
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+ 
+  <!-- PÁGINA DO FILME -->
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal-caixa" id="modal-caixa" role="dialog" aria-modal="true" aria-labelledby="m-titulo" tabindex="-1">
+      <button type="button" class="modal-fechar" id="modal-fechar" aria-label="Fechar">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+      </button>
+      <div id="modal-conteudo"></div>
+    </div>
+  </div>
+ 
+  <script src="script.js"></script>
+</body>
+</html>
